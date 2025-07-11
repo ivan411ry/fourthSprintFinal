@@ -1,7 +1,13 @@
 package spentcalories
 
 import (
+	"errors"
+	"fmt"
+	"log"
+	"strconv"
+	"strings"
 	"time"
+	
 )
 
 // Основные константы, необходимые для расчетов.

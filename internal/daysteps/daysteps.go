@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"spentcalories"
-	)
+	
+)
 
 const (
 	// Длина одного шага в метрах
