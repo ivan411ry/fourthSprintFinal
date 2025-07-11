@@ -85,7 +85,7 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 		duration.Hours(),
 		dist,
 		speed,
-		calories
+		calories,
 	), nil
 
 }
