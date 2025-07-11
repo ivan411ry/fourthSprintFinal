@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"fmt"
+	"log"
 	"github.com/Yandex-Practicum/tracker/internal/spentcalories"
 
 )
@@ -34,6 +35,9 @@ if len(parts) != 2 {
 			if err != nil {
 				return 0, 0, errors.New("Ошибка: не удалось преобразовать продолжительность")
 			}
+			if duration <= 0 {
+				return 0, 0, errors.New("Ошибка: продолжительность должны быть больше нуля")
+			}
 			return steps, duration, nil
 			}
 
@@ -44,14 +48,15 @@ func DayActionInfo(data string, weight, height float64) string {
 		log.Println(err)
 		return ""
 	}
-	if steps <= 0 {
+	if steps <= 0 || duration <= 0 {
+    log.Println("Ошибка: данные должны быть больше нуля")
 		return ""
 	}
 	metre := float64(steps) * stepLength
 	kilometre := metre / mInKm
 	calories, err := spentcalories.WalkingSpentCalories(steps, weight, height, duration)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return ""
 	}
 	return fmt.Sprintf(
