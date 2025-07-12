@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	
 )
 
 // Основные константы, необходимые для расчетов.
@@ -23,22 +22,22 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	// TODO: реализовать функцию
 	parts := strings.Split(data, ",")
 	if len(parts) != 3 {
-		return 0, "", 0, errors.New("Ошибка: ожидается три аргумента")
+		return 0, "", 0, errors.New("error: expect three values")
 	}
 	steps, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return 0, "", 0, err
+		return 0, "", 0, fmt.Errorf("error: step convert fail: %w", err)
 	}
 	if steps <= 0 {
-		return 0, "", 0, errors.New("Ошибка: шагов должно быть больше нуля")
-	} 
+		return 0, "", 0, errors.New("error: expect steps more than zero")
+	}
 	activity := parts[1]
 	duration, err := time.ParseDuration(parts[2])
 	if err != nil {
-		return 0, "", 0, err
+		return 0, "", 0, fmt.Errorf("error: convert duration fail: %w", err)
 	}
 	if duration <= 0 {
-		return 0, "", 0, errors.New("Ошибка: продолжительность должна быть больше нуля")
+		return 0, "", 0, errors.New("error: expect duration more than zero")
 	}
 	return steps, activity, duration, nil
 }
@@ -60,7 +59,6 @@ func meanSpeed(steps int, height float64, duration time.Duration) float64 {
 	hours := duration.Hours()
 	speed := dist / hours
 	return speed
-	
 }
 
 func TrainingInfo(data string, weight, height float64) (string, error) {
@@ -98,8 +96,17 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	// TODO: реализовать функцию
-	if steps <= 0 || weight <=0 || height <= 0 || duration <= 0 {
-		return 0, errors.New("Ошибка: данные должны быть больше нуля")
+	if steps <= 0 {
+		return 0, fmt.Errorf("error: expect steps more than zero")
+	}
+	if weight <= 0 {
+		return 0, fmt.Errorf("error: expect weight more than zero")
+	}
+	if height <= 0 {
+		return 0, fmt.Errorf("error: expect height more than zero")
+	}
+	if duration <= 0 {
+		return 0, fmt.Errorf("error: expect duration more than zero")
 	}
 	speed := meanSpeed(steps, height, duration)
 	minutes := duration.Minutes()
@@ -109,8 +116,17 @@ func RunningSpentCalories(steps int, weight, height float64, duration time.Durat
 
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	// TODO: реализовать функцию
-	if steps <= 0 || weight <=0 || height <= 0 || duration <=0 {
-		return 0, errors.New("Ошибка: данные должны быть больше нуля")
+	if steps <= 0 {
+		return 0, fmt.Errorf("error: expect steps more than zero")
+	}
+	if weight <= 0 {
+		return 0, fmt.Errorf("error: expect weight more than zero")
+	}
+	if height <= 0 {
+		return 0, fmt.Errorf("error: expect height more than zero")
+	}
+	if duration <= 0 {
+		return 0, fmt.Errorf("error: expect duration more than zero")
 	}
 	speed := meanSpeed(steps, height, duration)
 	minutes := duration.Minutes()

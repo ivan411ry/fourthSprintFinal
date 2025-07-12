@@ -1,14 +1,13 @@
 package daysteps
 
 import (
-	"time"
 	"errors"
+	"fmt"
+	"github.com/Yandex-Practicum/tracker/internal/spentcalories"
+	"log"
 	"strconv"
 	"strings"
-	"fmt"
-	"log"
-	"github.com/Yandex-Practicum/tracker/internal/spentcalories"
-
+	"time"
 )
 
 const (
@@ -20,36 +19,32 @@ const (
 
 func parsePackage(data string) (int, time.Duration, error) {
 	// TODO: реализовать функцию
-parts :=strings.Split(data, ",")
-if len(parts) != 2 {
-	return 0, 0, errors.New("Ошибка: ожидается два значения")
+	parts := strings.Split(data, ",")
+	if len(parts) != 2 {
+		return 0, 0, errors.New("error: expect two values")
 	}
 	steps, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return 0, 0, errors.New("Ошибка: не удалось преобразовать шаги")
-		}
-		if steps <= 0 {
-			return 0, 0, errors.New("Ошибка: кол-во шагов должно быть больше нуля")
-				}
-			duration, err := time.ParseDuration(parts[1])
-			if err != nil {
-				return 0, 0, errors.New("Ошибка: не удалось преобразовать продолжительность")
-			}
-			if duration <= 0 {
-				return 0, 0, errors.New("Ошибка: продолжительность должны быть больше нуля")
-			}
-			return steps, duration, nil
-			}
+		return 0, 0, fmt.Errorf("error: convert steps fail %w", err)
+	}
+	if steps <= 0 {
+		return 0, 0, errors.New("error: expect steps more than zero")
+	}
+	duration, err := time.ParseDuration(parts[1])
+	if err != nil {
+		return 0, 0, fmt.Errorf("error: convert duration fail %w", err)
+	}
+	if duration <= 0 {
+		return 0, 0, errors.New("error: expect duration more than zero ")
+	}
+	return steps, duration, nil
+}
 
 func DayActionInfo(data string, weight, height float64) string {
 	// TODO: реализовать функцию
 	steps, duration, err := parsePackage(data)
 	if err != nil {
 		log.Println(err)
-		return ""
-	}
-	if steps <= 0 || duration <= 0 {
-    log.Println("Ошибка: данные должны быть больше нуля")
 		return ""
 	}
 	metre := float64(steps) * stepLength
@@ -66,4 +61,3 @@ func DayActionInfo(data string, weight, height float64) string {
 		calories,
 	)
 }
-
